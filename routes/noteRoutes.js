@@ -1,4 +1,5 @@
 const router = require('express').Router()
+const { v4: uuidv4 } = require('uuid')
 const { join } = require('path')
 const fs = require('fs')
 
@@ -10,7 +11,10 @@ router.get('/notes', (req, res) => {
 })
 
 router.post('/notes', (req, res) => {
-  let note = req.body
+  let note = {
+    id: uuidv4(),
+    ...req.body
+  }
   fs.readFile(join(__dirname, '..', 'db', 'db.json'), 'utf8', (err, data) => {
     if (err) { console.log(err) }
     let notes = JSON.parse(data)
